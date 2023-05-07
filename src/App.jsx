@@ -9,14 +9,8 @@ function App() {
       path: '/',
       element: <Layout />,
       children: [
-        {
-          path: '/',
-          element: <HomePage />,
-        },
-        {
-          path: '/:id',
-          element: <DetailPage />,
-        },
+        { path: '/', element: <HomePage /> },
+        { path: '/:id', element: <DetailPage /> },
       ],
     },
   ]);

@@ -1,26 +1,52 @@
-import { Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import Moon from './Moon';
+import Drawer from './Drawer';
+import FilterComponent from './FilterComponent';
+import FilterIcon from './FilterIcon';
 
 function Header() {
+  const { id } = useParams();
+  const [open, setOpen] = useState(false);
+  const [dark, setDark] = useState(() => {
+    if (localStorage.getItem('mode') === 'true') {
+      document.documentElement.classList.add('dark');
+      return true;
+    }
+    return false;
+  });
+
+  const darkModeHandler = () => {
+    setDark(!dark);
+    localStorage.setItem('mode', !dark);
+    document.documentElement.classList.toggle('dark');
+  };
+
   return (
-    <header className='bg-gray-800 h-[50px] text-white body-font sticky top-0 left-0 right-0 shadow-[0_10px_10px_rgba(0,0,0,0.3)]'>
-      <div className='w-full p-5 flex flex-wrap  py-2 flex-col md:flex-row items-center'>
-        <Link to="/" className='flex title-font font-medium items-center text-white mb-4 md:mb-0'>
-          <h1 className='ml-3 text-2xl'>GameVault</h1>
-        </Link>
-        <nav className='md:ml-auto md:mr-auto flex flex-wrap items-center text-base justify-center'>
-          {/* <a className='mr-5 hover:text-gray-900'>First Link</a>
-          <a className='mr-5 hover:text-gray-900'>Second Link</a>
-          <a className='mr-5 hover:text-gray-900'>Third Link</a>
-          <a className='mr-5 hover:text-gray-900'>Fourth Link</a> */}
-        </nav>
-        {/* <button className='inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0'>
-          Button
-          <svg fill='none' stroke='currentColor' strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' className='w-4 h-4 ml-1' viewBox='0 0 24 24'>
-            <path d='M5 12h14M12 5l7 7-7 7'></path>
-          </svg>
-        </button> */}
-      </div>
-    </header>
+    <>
+      <header className='dark:bg-gray-800 bg-white h-[80px] flex align-middle z-40 dark:text-white body-font sticky top-0 left-0 right-0 shadow-[0_10px_10px_rgba(0,0,0,0.1)]'>
+        <div className='w-full p-5 flex flex-wrap align-middle justify-between  py-2 flex-col md:flex-row items-center'>
+          <Link to='/' className='flex title-font font-medium items-center text-gray-800 dark:text-white'>
+            <h1 className='ml-3 text-3xl'>GameVault</h1>
+          </Link>
+          <nav className='flex gap-10'>
+            {!id ? (
+              <button className='flex items-center gap-[10px]' onClick={() => setOpen(i => !i)}>
+                <FilterIcon />
+                <span className='text-[14px] md:text-[17px]'>Filter</span>
+              </button>
+            ) : null}
+            <button className='flex items-center gap-[10px] focus:outline-none' onClick={darkModeHandler}>
+              <Moon dark={dark} className='w-[20px] h-[20px]' />
+              <span className='text-[14px] md:text-[17px]'>{dark ? 'Light' : 'Dark'} Mode</span>
+            </button>
+          </nav>
+        </div>
+      </header>
+      <Drawer open={open} setOpen={setOpen} title='Filter'>
+        <FilterComponent />
+      </Drawer>
+    </>
   );
 }
 

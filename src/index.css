@@ -6,3 +6,27 @@
   width: 0px;
   height: 0px;
 }
+
+.carousel {
+  display: flex;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
+}
+
+.carousel__item {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 100%;
+  margin-right: 1rem;
+}
+
+.carousel__item:last-child {
+  margin-right: 0;
+}
+
+.carousel__item:first-child::before {
+  content: '';
+  width: 1rem;
+  height: 1px;
+  margin-right: 1rem;
+}
